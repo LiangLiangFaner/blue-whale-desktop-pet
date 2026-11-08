@@ -1,0 +1,26 @@
+node_modules/
+data/
+release/
+dist/
+artifacts/
+/Whale-Companion-*-portable.exe
+/codex-deepseek-pet-Setup-*.exe
+coverage/
+tmp/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+docs/qa-*.png
+docs/size-settings-preview.png
+docs/visual-walk-contact.png
+
+# Local editor settings
+.idea/
+.vscode/
+
+# Generated integration screenshots
+docs/*.png
+docs/*.webp

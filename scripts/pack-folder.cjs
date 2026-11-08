@@ -1,0 +1,17 @@
+'use strict';
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
+const root = path.join(__dirname, '..');
+if (process.platform !== 'win32') throw new Error('This folder packaging command requires Windows.');
+const builder = require.resolve('electron-builder/cli.js');
+const result = spawnSync(process.execPath, [builder, '--win', '--x64', '--dir'], { cwd: root, stdio: 'inherit' });
+if (result.status !== 0) process.exit(result.status || 1);
+const output = path.join(root, 'artifacts', '蓝色大肥鱼');
+if (fs.existsSync(output)) throw new Error('artifacts/蓝色大肥鱼 already exists. Move it aside before packaging again.');
+fs.cpSync(path.join(root, 'artifacts', 'win-unpacked'), output, { recursive: true });
+for (const name of ['使用说明.md', '更新动画说明.md']) fs.copyFileSync(path.join(root, 'docs', name), path.join(output, name));
+for (const name of ['LICENSE', 'ASSET_LICENSE.md', 'UPSTREAM.md']) fs.copyFileSync(path.join(root, name), path.join(output, name));
+fs.mkdirSync(path.join(output, 'docs'), { recursive: true });
+fs.copyFileSync(path.join(root, 'docs', 'UPSTREAM_ASSET_LICENSE.md'), path.join(output, 'docs', 'UPSTREAM_ASSET_LICENSE.md'));
+console.log('Portable folder ready: ' + output);
